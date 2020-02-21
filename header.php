@@ -222,6 +222,10 @@ $rs_member = $sql->fetch(PDO::FETCH_OBJ);
           </li>
 
           <li class="nav-item">
+            <a class="nav-link text-light" href="activities.php"><span class="fa fa-image"></span> กิจกรรม </a>
+          </li>
+
+          <li class="nav-item">
             <a href="cart.php" class="nav-link text-light">
               <span class="fa fa-shopping-cart"></span> ตะกร้าสินค้า <?php echo (isset($_SESSION['countCart'])) ? $_SESSION['countCart'] : ""; ?>
             </a>
