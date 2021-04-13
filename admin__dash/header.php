@@ -1,8 +1,11 @@
 <?php require_once '../condb.php'; ?>
 <?php
-$sql = $pdo->query(" select * from tbl_user where username = '" . $_SESSION['web']['username'] . "' AND level = 'admin' ");
+error_reporting(0);
+?>
+<?php 
+$sql = $pdo->query(" select * from tbl_user where username = '".$_SESSION['web']['username']."' AND level = 'admin' ");
 $rs_member = $sql->fetch(PDO::FETCH_ASSOC);
-if (empty($rs_member)) {
+if(empty($rs_member)){
     header("location: ../");
 }
 ?>
@@ -17,7 +20,7 @@ if (empty($rs_member)) {
     <title>ระบบจัดการร้านค้า</title>
 
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css" >
     <link rel="stylesheet" href="../fontawesome/web/css/fontawesome-all.css">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="style2.css">
@@ -27,78 +30,69 @@ if (empty($rs_member)) {
     <!-- Font Awesome JS -->
     <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
     <style>
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        a,
-        button,
-        li,
-        nav,
-        ul,
-        body,
-        span,
-        p {
+        h1,h2,h3,h4,h5,a,button,li,nav,ul,body,span,p{
             font-family: 'Kanit', sans-serif;
         }
     </style>
     <script>
-        function checksearch() {
+        function checksearch(){
             var searchlink = document.frmsearch.keylink.value;
-            if (searchlink) {
-                document.frmsearch.action = searchlink;
-            }
+            if(searchlink){
+                document.frmsearch.action=searchlink;
+            } 
             document.frmsearch.keylink.value = null;
             document.frmsearch.submit();
         }
     </script>
     <script>
-        function chkfirm(textalert) {
-            if (textalert == null) {
-                textalert = 'คุณต้องการดำเนินการต่อใช่หรือไม่';
-            }
-            if (confirm(textalert) == true) {
-                return true;
-            } else {
-                return false;
-            }
+    function chkfirm(textalert){
+      if(textalert == null){
+        textalert = 'คุณต้องการดำเนินการต่อใช่หรือไม่';
+      }
+      if(confirm(textalert)==true){
+        return true;
+      } else {
+        return false;
+      }
+    }
+    function checkpass(){
+        if(document.frmadd.password.value!=document.frmadd.repassword.value){
+            alert('รหัสผ่านไม่ตรงกัน');
+            document.frmadd.password.focus();
+            return false;
+        } else {
+            document.frmadd.submit();
+            return true;
         }
-
-        function checkpass() {
-            if (document.frmadd.password.value != document.frmadd.repassword.value) {
-                alert('รหัสผ่านไม่ตรงกัน');
-                document.frmadd.password.focus();
-                return false;
-            } else {
-                document.frmadd.submit();
-                return true;
-            }
-        }
+    }
     </script>
     <script>
-        function getDataFromDb() {
-            $.ajax({
-                url: "ajaxData.php",
-                type: "POST",
-                dataType: 'html',
-                success: function(result) {}
-            });
-        }
+    function getDataFromDb()
+    {
+      $.ajax({ 
+            url: "ajaxData.php" ,
+            type: "POST",
+            dataType: 'html',
+            success: function(result){
+            }
+      });
+    }
 
-        setInterval(getDataFromDb, 3000); // 1000 = 1 วินาที
+    setInterval(getDataFromDb, 3000);   // 1000 = 1 วินาที
 
-        function getDataFromDb2() {
-            $.ajax({
-                url: "ajaxData2.php",
-                type: "POST",
-                dataType: 'html',
-                success: function(result) {}
-            });
-        }
+    function getDataFromDb2()
+    {
+      $.ajax({ 
+            url: "ajaxData2.php" ,
+            type: "POST",
+            dataType: 'html',
+            success: function(result){
+            }
+      });
+    }
 
-        setInterval(getDataFromDb, 3000); // 1000 = 1 วินาที
-        setInterval(getDataFromDb2, 3000);
+    setInterval(getDataFromDb, 3000);   // 1000 = 1 วินาที
+    setInterval(getDataFromDb2,3000);
     </script>
 </head>
 
@@ -113,26 +107,19 @@ if (empty($rs_member)) {
 
             <ul class="list-unstyled components">
                 <center>
-                    <?php if ($rs_member['profiles'] == NULL) { ?>
+                    <?php if($rs_member['profiles']==NULL) { ?>
                         <img src="../image/img_avatar3.png" style="width:30%;height:40%;border-radius:50%" alt="">
                     <?php } else { ?>
                         <img src="../image/<?php echo $rs_member['profiles']; ?>" style="width:40%;height:auto%;border-radius:50%" alt="">
                     <?php } ?>
-                    <p><?php echo $rs_member['name'] . " " . $rs_member['surname']; ?></p>
+                    <p><?php echo $rs_member['name']." ".$rs_member['surname']; ?></p>
                 </center>
-                <div style="text-align: center">
-                <a href="../index.php" class="btn btn-danger">ไปที่หน้าเว็บไซต์</a>
-                </div>
-
-                <li>
+                <li class="active">
                     <a href="index.php">หน้าแรก</a>
                 </li>
-
+               
                 <li>
                     <a href="member.php">สมาชิก</a>
-                </li>
-                <li>
-                    <a href="activities.php">กิจกรรม</a>
                 </li>
                 <li>
                     <a href="categories.php">ประเภทสินค้า</a>
@@ -162,7 +149,7 @@ if (empty($rs_member)) {
                         </li>
                     </ul>
                 </li>
-                <ol class="nav-active">
+                    <ol class="nav-active">
                     <a href="../logout.php" onclick="return chkfirm('ต้องการออกจากระบบใช่หรือไม่');" class="btn-danger btn">
                         <span class="fa fa-sign-out-alt"></span> ออกจากระบบ
                     </a>
@@ -176,7 +163,7 @@ if (empty($rs_member)) {
             <nav class="navbar navbar-expand-lg navbar-light bg-ligth">
                 <div class="container-fluid">
 
-                    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
                         <i class="fas fa-align-left"></i>
                         <span>เมนู</span>
                     </button>
@@ -189,23 +176,24 @@ if (empty($rs_member)) {
 
                             <li class="nav-item">
                                 <form name="frmsearch" action="" method="get" onsubmit="return checksearch()">
-                                    <div class="form-group">ค้นหา :
+                                    <div class="form-group">ค้นหา : 
                                         <select name="keylink" id="" class="form-control" required>
                                             <option value="member.php">สมาชิก</option>
                                             <option value="product.php">สินค้า</option>
                                             <option value="categories.php">ประเภทสินค้า</option>
                                         </select>
                                     </div>
-                                    <div class="input-group">
-                                        <input name="keyword" type="text" placeholder="ค้นหาที่นี่" class="form-control" required>
+                                        <div class="input-group">
+                                            <input name="keyword" type="text" placeholder="ค้นหาที่นี่" class="form-control" required>
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="submit">ค้นหา</button>
+                                            <button class="btn btn-info" type="submit">ค้นหา</button>
                                         </div>
                                     </div>
                                 </form>
-
+                                
                             </li>
                         </ul>
                     </div>
                 </div>
             </nav>
+

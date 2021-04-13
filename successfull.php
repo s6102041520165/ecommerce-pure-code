@@ -6,10 +6,10 @@
 <div class="col-md-9 col-lg-9">
     <br>
     <nav aria-label="breadcrumb ">
-        <ol class="breadcrumb bg-pink ">
-            <li class="breadcrumb-item"><a class="text-light">ขั้นตอนที่ 1 ข้อมูลลูกค้า</a></li>
-            <li class="breadcrumb-item"><a class="text-light" >ขั้นตอนที่ 2 การจัดส่ง</a></li>
-            <li class="breadcrumb-item"><a class="text-light" >ขั้นตอนที่ 3 การสั่งซื้อเสร็จสิ้น</a></li>
+        <ol class="breadcrumb bg-info ">
+            <li class="breadcrumb-item"><a class="text-white">ขั้นตอนที่ 1 ข้อมูลลูกค้า</a></li>
+            <li class="breadcrumb-item"><a class="text-white" >ขั้นตอนที่ 2 การจัดส่ง</a></li>
+            <li class="breadcrumb-item"><a class="text-white" >ขั้นตอนที่ 3 การสั่งซื้อเสร็จสิ้น</a></li>
         </ol>
     </nav>
     

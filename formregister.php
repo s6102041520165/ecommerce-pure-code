@@ -1,38 +1,38 @@
 <?php require_once 'condb.php'; ?>
-<?php
-if (isset($_SESSION['web'])) {
-    echo "<script>window.history.back();</script>";
+<?php 
+if(isset($_SESSION['web'])){
+  echo "<script>window.history.back();</script>";
 }
-if (isset($_GET['action']) && $_GET['action'] == "add") {
-    $ext = pathinfo($_FILES['profiles']['name'], PATHINFO_EXTENSION);
-    $rand = rand(000000000, 999999999);
-    $name = "profiles" . $rand . "." . $ext;
+if(isset($_GET['action']) && $_GET['action']=="add"){
+    $ext = pathinfo($_FILES['profiles']['name'],PATHINFO_EXTENSION);
+    $rand = rand(000000000,999999999);
+    $name = "profiles".$rand.".".$ext;
     $tmp = $_FILES['profiles']['tmp_name'];
-    if (!$tmp) {
+    if(!$tmp){
         $name = NULL;
-    }
-    move_uploaded_file($tmp, "image/" . $name);
+    } 
+    move_uploaded_file($tmp,"image/".$name);
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
-    $password = password_hash($password, PASSWORD_DEFAULT);
-
-
+    $password = password_hash($password,PASSWORD_DEFAULT);
+    
+    
     $update = $pdo->query("INSERT INTO tbl_user (`username`, `password`, `name`, `surname`, `profiles`, `email`, `tel`, `addr`, `locality`, `district`, `province`, `zipcode`, `level`)
-            VALUES ('" . $username . "',
-            '" . $password . "',
-            '" . htmlspecialchars($_POST['name']) . "',
-            '" . htmlspecialchars($_POST['surname']) . "',
-            '" . htmlspecialchars($name) . "',
-            '" . htmlspecialchars($_POST['email']) . "',
-            '" . htmlspecialchars($_POST['tel']) . "',
-            '" . htmlspecialchars($_POST['addr']) . "',
-            '" . htmlspecialchars($_POST['locality']) . "',
-            '" . htmlspecialchars($_POST['district']) . "',
-            '" . htmlspecialchars($_POST['province']) . "',
-            '" . htmlspecialchars($_POST['zipcode']) . "',
+            VALUES ('".$username."',
+            '".$password."',
+            '".htmlspecialchars($_POST['name'])."',
+            '".htmlspecialchars($_POST['surname'])."',
+            '".htmlspecialchars($name)."',
+            '".htmlspecialchars($_POST['email'])."',
+            '".htmlspecialchars($_POST['tel'])."',
+            '".htmlspecialchars($_POST['addr'])."',
+            '".htmlspecialchars($_POST['locality'])."',
+            '".htmlspecialchars($_POST['district'])."',
+            '".htmlspecialchars($_POST['province'])."',
+            '".htmlspecialchars($_POST['zipcode'])."',
             'customer') ");
-    if ($update) {
-        echo ("<script>alert('สมัครสมาชิกสำเร็จ');window.location='index.php';</script>");
+    if($update){
+        echo("<script>alert('สมัครสมาชิกสำเร็จ');window.location='index.php';</script>");
     } else {
         echo "<script>alert('ไม่สามารถสมัครสมาชิกได้');</script>";
         echo "<script>window.history.back();</script>";
@@ -48,7 +48,7 @@ if (isset($_GET['action']) && $_GET['action'] == "add") {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>สมัครสมาชิก</title>
+    <title>Signin</title>
 
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
@@ -60,7 +60,7 @@ if (isset($_GET['action']) && $_GET['action'] == "add") {
     <link rel="stylesheet" href="./jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.css">
     <script type="text/javascript" src="./jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $.Thailand.setup({
                 database: './jquery.Thailand.js/jquery.Thailand.js/database/db.json'
             });
@@ -95,19 +95,6 @@ if (isset($_GET['action']) && $_GET['action'] == "add") {
         span {
             font-family: 'Kanit', sans-serif;
         }
-        
-        body{
-            background-color: lightsalmon;
-        }
-
-        .container {
-            background-color: whitesmoke;
-            border-radius: 5px;
-            box-shadow: 0px 0px 5px #ccc;
-            padding: 20px;
-            margin: 50px auto;
-            max-width: 650px;
-        }
     </style>
     <script>
         function checkpass() {
@@ -125,8 +112,9 @@ if (isset($_GET['action']) && $_GET['action'] == "add") {
 
 <body>
     <div class="container">
-        <form enctype="multipart/form-data" name="frmadd" action="formregister.php?action=add" onsubmit="return checkpass();" method="post">
-            <h1 class="text-center">สมัครสมาชิก</h1>
+        <form enctype="multipart/form-data" name="frmadd"
+            action="formregister.php?action=add" onsubmit="return checkpass();" method="post">
+            <h1 class="">สมัครสมาชิก</h1>
 
             <div class="form-group">
                 <label for="inputGroupSelect01">Username</label>
@@ -144,21 +132,14 @@ if (isset($_GET['action']) && $_GET['action'] == "add") {
             </div>
             <hr>
 
+            <div class="form-group">
+                <label for="inputGroupSelect01">ชื่อ</label>
+                <input type="text" class="form-control" required name="name">
+            </div>
 
-
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label for="inputGroupSelect01">ชื่อ</label>
-                        <input type="text" class="form-control" required name="name">
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label for="inputGroupSelect01">นามสกุล</label>
-                        <input type="text" class="form-control" required name="surname">
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="inputGroupSelect01">นามสกุล</label>
+                <input type="text" class="form-control" required name="surname">
             </div>
 
             <div class="form-group">
@@ -166,21 +147,15 @@ if (isset($_GET['action']) && $_GET['action'] == "add") {
                 <input type="file" class="form-control" name="profiles">
             </div>
 
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label for="inputGroupSelect01">อีเมล์</label>
-                        <input type="email" class="form-control" required name="email">
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label for="inputGroupSelect01">เบอร์โทร</label>
-                        <input type="text" maxlength="10" class="form-control" required name="tel">
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="inputGroupSelect01">อีเมล์</label>
+                <input type="email" class="form-control" required name="email">
             </div>
 
+            <div class="form-group">
+                <label for="inputGroupSelect01">เบอร์โทร</label>
+                <input type="text" maxlength="10" class="form-control" required name="tel">
+            </div>
 
             <div class="form-group">
 
@@ -212,8 +187,8 @@ if (isset($_GET['action']) && $_GET['action'] == "add") {
 
             <input type="hidden" name="level" value="member">
 
-            <button type="submit" class="btn btn-primary btn-block">สมัครสมาชิก</button>
-            <p class="mt-5 mb-3 text-muted text-center">Copyright &copy; 2018 | <a href="index.php"><span class="fa fa-home"></span>
+            <button type="submit" class="btn btn-primary">สมัครสมาชิก</button>
+            <p class="mt-5 mb-3 text-muted">Copyright &copy; 2018 | <a href="index.php"><span class="fa fa-home"></span>
                     Home</a></p>
 
         </form>

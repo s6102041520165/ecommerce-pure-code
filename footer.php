@@ -2,9 +2,9 @@
     </div>
     <br>
 
-    <footer class="py-5 bg-pink">
-      <div class="container-fluid">
-        <p class="m-0 text-center text-light">Copyright &copy; ................. 2019 <a class="text-danger" href="admin__dash/"><span class="fa fa-lock"></span></a></p>
+    <footer class="py-5 bg-info">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Weerachai Plodkaew 2019 <a class="text-danger" href="admin__dash/"><span class="fa fa-lock"></span></a></p>
       </div>
     </footer>
 

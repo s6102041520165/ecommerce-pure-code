@@ -7,14 +7,24 @@ if(isset($_GET['step']) && $_GET['step']==2){
     echo "<script>window.location='checkout.php';</script>";
 }
 ?>
+<style>
+    .omise-checkout-button{
+        background:blue;
+        border:blue;
+        line-height:30px;
+        padding:10px;
+        border-radius:5px;
+        color:white;
+    }
+</style>
 <?php require_once 'sidebar.php' ?>
 
 <div class="col-md-9 col-lg-9">
     <br>
     <nav aria-label="breadcrumb ">
-        <ol class="breadcrumb bg-pink">
-            <li class="breadcrumb-item"><a class="text-light">ขั้นตอนที่ 1 ข้อมูลลูกค้า</a></li>
-            <li class="breadcrumb-item"><a class="text-light" >ขั้นตอนที่ 2 การจัดส่ง</a></li>
+        <ol class="breadcrumb bg-info ">
+            <li class="breadcrumb-item"><a class="text-white">ขั้นตอนที่ 1 ข้อมูลลูกค้า</a></li>
+            <li class="breadcrumb-item"><a class="text-white" >ขั้นตอนที่ 2 การจัดส่ง</a></li>
             <li class="breadcrumb-item"><a class="text-secondary" >ขั้นตอนที่ 3 การสั่งซื้อเสร็จสิ้น</a></li>
         </ol>
     </nav>
@@ -91,7 +101,7 @@ if(isset($_GET['step']) && $_GET['step']==2){
                 }
             ?>
             <tr>
-                <td class="bg-light text-light" valign="middle" align="center" rowspan="3" colspan="2">
+                <td class="bg-light text-white" valign="middle" align="center" rowspan="3" colspan="2">
                     <button class="btn-outline-primary btn" type="submit">อัพเดท</button>
                 </td>
                 <td align="right">ราคาสินค้ารวม</td>
@@ -110,8 +120,8 @@ if(isset($_GET['step']) && $_GET['step']==2){
     </form> 
     <?php if($rs_member->username) { ?>
 
-    <div class="card border-pink">
-        <div class="card-header bg-pink text-light">
+    <div class="card border-primary">
+        <div class="card-header bg-primary text-white">
             <span class="fa fa-user"></span> ตรวจสอบข้อมูลลูกค้า
         </div>
         <div class="card-body">
@@ -209,11 +219,45 @@ if(isset($_GET['step']) && $_GET['step']==2){
     </div> 
     <br>
     <div class="row">
-        
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <span class="fa fa-credit-card"></span> ชำระเงินด้วยบัตรเครดิต/เดบิต
+                </div>
+                <div class="card-body">
+                <div class="alert alert-info">คุณสามารถชำระเงินผ่านช่องทางนี้ได้ในกรณีที่คุณมีบัตรเครดิต/เดบิต</div>
+                    <form name="checkoutForm" method="POST" action="savecheckout.php">
+                        <input type="hidden" name="description" value="Product order ฿<?php echo $sumtotal; ?>" />
+                        <input type="hidden" name="sumtotal" value="<?php echo $sumtotal; ?>">
+                        <input type="hidden" name="tax" value="<?php echo $tax; ?>">
+                        <input type="hidden" name="prototal" value="<?php echo $prototal; ?>">
+                        <input type="hidden" name="username" value="<?php echo $rs_member->username; ?>">
+                        <script type="text/javascript" src="https://cdn.omise.co/card.js"
+                        data-key="pkey_test_5eavs1d5xv4lfvr0jhv"
+                        data-image="http://localhost/ecommerce/image/logo.jpg"
+                        data-frame-label="ร้านฟาร์มสวย"
+                        data-button-label="ชำระเงิน"
+                        data-submit-label="Submit"
+                        data-amount="<?php echo $sumtotal*100; ?>"
+                        data-currency="thb"
+                        >
+                        </script>
+                        <!--
+                            data-image หมายถึง path ที่เก็บรูปภาพโลโกเว็บไว้
+                            data-frame-label ชื่อร้าน
+                            data-button-label ข้อความที่ปุ่ม
+                            data-submit-label หมายถึง ชนิดปุ่ม
+                        -->
+                        <!--the script will render <input type="hidden" name="omiseToken"> for you automatically-->               
+                    </form>
 
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="card border-pink">
-                <div class="card-header bg-pink text-light">
+                </div>
+            </div> 
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
                     <span class="fa fa-credit-card"></span> ชำระเงินกับธนาคาร
                 </div>
                 <div class="card-body">

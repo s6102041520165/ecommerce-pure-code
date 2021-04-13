@@ -29,8 +29,8 @@ if($_GET['action']=='save'){
 
 <div class="col-md-9 col-lg-9">
 <br>
-    <div class="card border-pink">
-        <div class="card-header bg-pink text-light">
+    <div class="card border-info">
+        <div class="card-header bg-info text-white">
             <span class="fa fa-credit-card"></span> แจ้งชำระเงิน
         </div>
         <div class="card-body">

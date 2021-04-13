@@ -1,4 +1,3 @@
-
 <?php require_once 'header.php' ?>
 <style>
 .checked {
@@ -58,7 +57,7 @@ $(document).ready(function(){
               <img class="xzoom" id="xzoom-default" src="image/<?php echo $rowproduct->proPic; ?>" xoriginal="image/<?php echo $rowproduct->proPic; ?>" />
               <div class="xzoom-thumbs">
               <a href="image/<?php echo $rowproduct->proPic; ?>">
-              <img class="xzoom-gallery" width="80" src="image/<?php echo $rowproduct->proPic; ?>"  xpreview="image/<?php echo $rowproduct->proPic; ?>" title="<?php echo $rowproduct->proName; ?>"></a>
+              <img class="xzoom-gallery" width="80" src="image/<?php echo $rowproduct->proPic; ?>" xpreview="image/<?php echo $rowproduct->proPic; ?>" title="<?php echo $rowproduct->proName; ?>"></a>
                 <?php 
                 $sql = " select * from tbl_pic_product where proID = '".$rowproduct->proID."' ";
                 $query = $pdo->query($sql);
@@ -83,9 +82,9 @@ $(document).ready(function(){
                 $key = @array_search($rowproduct->proID,$_SESSION['proID']);
                 if($_SESSION['qty'][$key]<$rowproduct->proQty-$rsqty->sumqty && $rsqty->sumqty < $rowproduct->proQty){                 
                   ?>
-                <button type="button" onclick="window.location='bookingcart.php?proID=<?php echo $rowproduct->proID; ?>'" class="btn btn-primary"><i>สั่งซื้อ</i></button>
+                <button type="button" onclick="window.location='bookingcart.php?proID=<?php echo $rowproduct->proID; ?>'" class="btn btn-info"><i>สั่งซื้อ</i></button>
               <?php } ?>
-              <button type="button" onclick="window.history.back()" class="btn btn-primary"><i>ย้อนกลับ</i></button>
+              <button type="button" onclick="window.history.back()" class="btn btn-info"><i>ย้อนกลับ</i></button>
             </div>
             <span class="badge badge-info"><?php echo $rowproduct->dateP; ?></span>
           </div>
@@ -113,7 +112,7 @@ $(document).ready(function(){
                 if($i<=$show_star){
                   echo "<a href=\"details.php?action=rating&rating=$i&proID=$rowproduct->proID\"><span class=\"fa fa-star checked\"></span></a>";
                 } else {
-                  echo "<a class=\"text-light\" href=\"details.php?action=rating&rating=$i&proID=$rowproduct->proID\"><span class=\"fa fa-star\"></span></a>";
+                  echo "<a class=\"text-dark\" href=\"details.php?action=rating&rating=$i&proID=$rowproduct->proID\"><span class=\"fa fa-star\"></span></a>";
                 }
               }
               echo " (ค่าเฉลี่ย ".number_format($rs_rating->ratingAVG,2).")";
@@ -176,6 +175,7 @@ $(document).ready(function(){
       <button <?php if(!isset($rs_member->username)) { echo "disabled"; } ?> type="submit" class="btn btn-primary">รีวิวสินค้า</button>
     </form>
 </div>
+
 <script src="js/foundation.min.js"></script>
 <script src="js/setup.js"></script>
 <?php require_once 'footer.php' ?>

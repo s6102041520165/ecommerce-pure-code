@@ -1,39 +1,33 @@
 <?php require_once 'header.php' ?>
 <?php require_once 'sidebar.php' ?>
 
-<style>
-  .product:hover{
-    box-shadow: 0px 0px 5px #ccc;
-    transition-duration: 0.5s;
-    transform: scale(1.15);
-  }
-</style>
-
 <div class="col-md-9 col-lg-9">
   <br>
   <div class="row">
     <!--แสดงสินค้า-->
     <?php
     if (isset($_GET['catgID'])) {
+      $catgId = isset($_GET['catgID']) ? htmlspecialchars($_GET['catgID']) : '';
       $sql = " SELECT *, DATE_FORMAT(proDate,'%D %M %Y') as dateP 
       from tbl_product 
-      WHERE catgID = '" . $_GET['catgID'] . "' ";
-      $query = $pdo->query($sql);
+      WHERE catgID = :catg";
+      $query = $pdo->prepare($sql);
+      $query->bindParam(':catg', $catgId);
     } elseif (isset($_GET['keyword'])) {
-      $sql = " SELECT *, DATE_FORMAT(proDate,'%D %M %Y') as dateP 
+      $keyword = isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '';
+      $sql = "SELECT *, DATE_FORMAT(proDate,'%D %M %Y') as dateP 
       FROM tbl_product 
-      WHERE proName LIKE '%" . $_GET['keyword'] . "%' ";
-      $query = $pdo->query($sql);
+      WHERE proName LIKE '%:keyword%' ";
+      $query = $pdo->prepare($sql);
+      $query->bindParam(':keyword', $keyword);
     } else {
       $sql = " SELECT *, DATE_FORMAT(proDate,'%D %M %Y') as dateP FROM tbl_product ";
-      $query = $pdo->query($sql);
+      $query = $pdo->prepare($sql);
     }
-    $Num_Rows = $query->rowCount;
+    $query->execute();
+    $Num_Rows = $query->rowCount();
     $Per_Page = 10;   // Per Page
-    $Page = $_GET["page"];
-    if (!isset($_GET["page"])) {
-      $Page = 1;
-    }
+    $Page = isset($_GET["page"]) ? $_GET["page"] : 1;
     $Prev_Page = $Page - 1;
     $Next_Page = $Page + 1;
     $Page_Start = (($Per_Page * $Page) - $Per_Page);
@@ -43,22 +37,22 @@
       $Num_Pages = ($Num_Rows / $Per_Page);
     } else {
       $Num_Pages = ($Num_Rows / $Per_Page) + 1;
-      $Num_Pages = (int) $Num_Pages;
+      $Num_Pages = (int)$Num_Pages;
     }
     $sql .= " LIMIT $Page_Start , $Per_Page";
     $query  = $pdo->query($sql);
-
     while ($rowproduct = $query->fetch(PDO::FETCH_OBJ)) {
-      $sql2 = $pdo->query("SELECT SUM(qty) AS sumqty,payoption
-                  FROM tbl_order_detail left join tbl_order
-                  ON (tbl_order_detail.orderID=tbl_order.orderID)
-                  WHERE proID = '" . $rowproduct->proID . "' AND status = 'no'
+      $sql2 = $pdo->prepare("SELECT SUM(qty) AS sumqty,payoption
+                  FROM tbl_order_detail left join tbl_order USING orderID
+                  WHERE proID = ':proID' AND status = 'no'
                   AND showOrder <> 'no'
                   GROUP BY proID; ");
+      $sql2->bindParam(':proID', $rowproduct->proID);
+      $sql2->execute();
       $rsqty = $sql2->fetch(PDO::FETCH_OBJ);
     ?>
-      <div class="col-md-6 col-lg-4 col-xl-3 col-xs-12 col-sm-6">
-        <div class="card mb-4 box-shadow product">
+      <div class="col-md-6 col-lg-6">
+        <div class="card mb-4 box-shadow">
           <img class="card-img-top" style="height: auto; width: 100%; display: block;" src="image/<?php echo $rowproduct->proPic ?>" data-holder-rendered="true">
           <div class="card-body">
             <p>
@@ -69,26 +63,30 @@
             </p>
             <h4 class="text-info">ราคา : <?php echo number_format($rowproduct->proPrice, 2); ?> THB</h4>
             <p>คงเหลือ : <?php echo $rowproduct->proQty . " " . $rowproduct->UnitName; ?>
-              <?php if ($rsqty) { ?>(รอชำระเงิน : <?php echo $rsqty->sumqty; ?>)<?php } ?></p>
+              <?php if (isset($rsqty) && $rsqty != false) { ?>(รอชำระเงิน : <?php echo $rsqty->sumqty; ?>)<?php } ?></p>
             <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group" style="margin: auto">
+              <div class="btn-group">
                 <?php
 
                 $key = @array_search($rowproduct->proID, $_SESSION['proID']);
-                if ($_SESSION['qty'][$key] < $rowproduct->proQty - $rsqty->sumqty && $rsqty->sumqty < $rowproduct->proQty) {
-
+                $qty = isset($_SESSION['qty'][$key]) ? $_SESSION['qty'][$key] : 0;
+                if (isset($rsqty) && $rsqty !== false) :
+                  if ($qty < $rowproduct->proQty - $rsqty->sumqty && $rsqty->sumqty < $rowproduct->proQty) {
                 ?>
-                  <button type="button" onclick="window.location='bookingcart.php?proID=<?php echo $rowproduct->proID; ?>'" class="btn btn-sm btn-primary"><i>สั่งซื้อ</i></button>
+                    <button type="button" onclick="window.location='bookingcart.php?proID=<?php echo $rowproduct->proID; ?>'" class="btn btn-sm btn-info"><i>สั่งซื้อ</i></button>
                 <?php
-                }
+                  }
+                endif;
                 ?>
-                <button type="button" onclick="window.location='details.php?proID=<?php echo $rowproduct->proID; ?>'" class="btn btn-sm btn-primary"><i>รายละเอียด</i></button>
+                <button type="button" onclick="window.location='details.php?proID=<?php echo $rowproduct->proID; ?>'" class="btn btn-sm btn-info"><i>รายละเอียด</i></button>
               </div>
+              <span class="badge badge-info"><?php echo $rowproduct->dateP; ?></span>
             </div>
           </div>
         </div>
       </div>
-    <?php } ?>
+    <?php
+    } ?>
     <!--สิ้นสุดการแสดงสินค้า-->
   </div>
   <hr>

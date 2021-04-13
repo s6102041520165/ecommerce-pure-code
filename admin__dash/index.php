@@ -23,12 +23,12 @@
 
                 </center>
             </div>
-            <div class="card-footer bg-success border-success text-light"><h5><a href="member.php">View & Edit</a> <span class="fa fa-tachometer-alt"></span></h5></div>
+            <div class="card-footer bg-success border-success text-white"><h5><a href="member.php">View & Edit</a> <span class="fa fa-tachometer-alt"></span></h5></div>
         </div>        
     </div>
 
     <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="card border-info">
+        <div class="card border-primary">
             <div class="card-body text-primary">
                 <center>
                     <span class="fa fa-list-alt fa-5x"></span>
@@ -45,7 +45,7 @@
 
                 </center>
             </div>
-            <div class="card-footer bg-primary border-info text-light"><h5><a href="categories.php">View & Edit</a> <span class="fa fa-tachometer-alt"></span></h5></div>
+            <div class="card-footer bg-primary border-primary text-white"><h5><a href="categories.php">View & Edit</a> <span class="fa fa-tachometer-alt"></span></h5></div>
         </div>
     </div>
 
@@ -67,7 +67,7 @@
 
                 </center>
             </div>
-            <div class="card-footer bg-danger border-danger text-light">
+            <div class="card-footer bg-danger border-danger text-white">
             <h5><a href="product.php">View & Edit</a> <span class="fa fa-tachometer-alt"></span></h5></div>
         </div>
     </div>
@@ -90,7 +90,7 @@
 
                 </center>
             </div>
-            <div class="card-footer bg-info border-info text-light">
+            <div class="card-footer bg-info border-info text-white">
             <h5><a href="order.php?status=1">View & Edit</a> <span class="fa fa-tachometer-alt"></span></h5></div>
         </div>
     </div>
@@ -113,7 +113,7 @@
 
                 </center>
             </div>
-            <div class="card-footer bg-secondary border-secondary text-light">
+            <div class="card-footer bg-secondary border-secondary text-white">
             <h5><a href="order.php?status=2">View & Edit</a> <span class="fa fa-tachometer-alt"></span></h5></div>
         </div>
     </div>

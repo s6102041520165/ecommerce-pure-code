@@ -8849,11 +8849,11 @@ a.text-light:hover, a.text-light:focus {
   color: #dae0e5 !important;
 }
 
-.text-light {
+.text-dark {
   color: #343a40 !important;
 }
 
-a.text-light:hover, a.text-light:focus {
+a.text-dark:hover, a.text-dark:focus {
   color: #1d2124 !important;
 }
 

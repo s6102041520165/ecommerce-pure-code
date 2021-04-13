@@ -1,11 +1,18 @@
 <?php
+
+error_reporting(0);
 if (file_exists('installation')) {
   header("Location: installation");
 }
+
 ?>
 <?php require_once 'condb.php'; ?>
 <?php
-$sql = $pdo->query(" select * from tbl_user where username = '" . $_SESSION['web']['username'] . "' ");
+$username = isset($_SESSION['web']['username']) ? $_SESSION['web']['username'] : '';
+
+$sql = $pdo->prepare(" select * from tbl_user where username = :username");
+$sql->bindParam(':username', $username, PDO::PARAM_STR);
+$sql->execute();
 $rs_member = $sql->fetch(PDO::FETCH_OBJ);
 ?>
 <!DOCTYPE html>
@@ -19,11 +26,12 @@ $rs_member = $sql->fetch(PDO::FETCH_OBJ);
   <meta name="author" content="">
 
   <title>ร้านฟาร์มสวย</title>
-  <script src="./vendor/jquery/jquery.js"></script>
+  <script src="vendor/jquery/jquery.js"></script>
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="vendor/bootstrap/css/blog.css" rel="stylesheet">
   <link rel="stylesheet" href="fontawesome/web/css/fontawesome-all.css">
   <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
+  <script src="js/foundation.min.js"></script>
 
 
   <link rel="stylesheet" href="css/normalize.css">
@@ -36,12 +44,12 @@ $rs_member = $sql->fetch(PDO::FETCH_OBJ);
   <link type="text/css" rel="stylesheet" media="all" href="magnific-popup/css/magnific-popup.css" />
   <script type="text/javascript" src="fancybox/source/jquery.fancybox.js"></script>
   <script type="text/javascript" src="magnific-popup/js/magnific-popup.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="./jquery.Thailand.js/jquery.Thailand.js/dependencies/JQL.min.js"></script>
-  <script type="text/javascript" src="./jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js">
-  </script>
+  <script type="text/javascript" src="./jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js"></script>
   <link rel="stylesheet" href="./jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.css">
   <script type="text/javascript" src="./jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
   <script>
     function chkfirm(textalert) {
       if (textalert == null) {
@@ -82,53 +90,15 @@ $rs_member = $sql->fetch(PDO::FETCH_OBJ);
       margin: 0;
     }
 
+    ;
+
     .container {
       max-width: 95%;
     }
 
-    .bg-pink {
-      background-color: lightcoral;
-    }
-
-
-    .bg-pink-light {
-      background-color: pink;
-    }
-
-
-    .border-pink {
-      border: lightcoral;
-    }
-
-    .btn-pink {
-      background-color: lightsalmon;
-      color: #ECFFF1;
-      border: 0px;
-    }
-
-
-    .page-item.ative .page-link {
-      background-color: lightcoral !important;
-      border-color: lightcoral !important;
-    }
-
-    .card .btn-primary {
-      background-color: lightsalmon;
-      border: 0px;
-    }
-
-    .card .btn-primary:hover {
-      background-color: red;
-      opacity: 0.7;
-    }
-
-    .border-pink{
-      border:1px lightcoral;
-    }
-
     @media screen and (min-width:1000px) {
       .navbar-brand {
-        background: sandybrown;
+        background: rgb(102, 84, 156);
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         padding: 18px;
@@ -151,8 +121,17 @@ $rs_member = $sql->fetch(PDO::FETCH_OBJ);
     }
 
     setInterval(getDataFromDb, 5000); // 1000 = 1 วินาที
-
     $(document).ready(function() {
+      $.Thailand.setup({
+        database: './jquery.Thailand.js/jquery.Thailand.js/database/db.json'
+      });
+      $.Thailand({
+        $amphoe: $('[name="district"]'),
+        $district: $('[name="locality"]'),
+        $province: $('[name="province"]'),
+        $zipcode: $('[name="zipcode"]'),
+
+      });
       $(window).scroll(function() {
         var SY = window.scrollY;
         var navY = ($('nav').position().top) + ($('nav').height());
@@ -171,12 +150,11 @@ $rs_member = $sql->fetch(PDO::FETCH_OBJ);
 
   <!-- Navigation -->
   <div style="background: #eeeeee">
-    <div class="container-fluid" style="padding-top: 20px;padding-bottom: 20px;">
+    <div class="container" style="padding-top: 20px;padding-bottom: 20px;">
       <div class="row">
         <div class="col-md-7 ">
 
-
-          <?php if ($rs_member->username == null) { ?>
+          <?php if (!isset($rs_member) || $rs_member === false) { ?>
             <button class="btn btn-outline-danger" onclick="window.location='formlogin.php'">เข้าสู่ระบบ</button>
             <button class="btn btn-outline-success " onclick="window.location='formregister.php'">สมัครสมาชิกใหม่</button>
           <?php } else { ?>
@@ -191,7 +169,7 @@ $rs_member = $sql->fetch(PDO::FETCH_OBJ);
             <input type="text" name="keyword" class="form-control" placeholder="ค้นหาสินค้าที่นี่...">
 
             <div class="input-group-append">
-              <button type="submit" class="btn btn-pink">ค้นหา</button>
+              <button type="submit" class="btn btn-info">ค้นหา</button>
             </div>
 
           </div>
@@ -200,8 +178,8 @@ $rs_member = $sql->fetch(PDO::FETCH_OBJ);
     </div>
   </div>
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-pink ">
-    <div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info ">
+    <div class="container">
       <a class="navbar-brand" href="index.php">Ecommerce</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -210,35 +188,33 @@ $rs_member = $sql->fetch(PDO::FETCH_OBJ);
         <ul class="navbar-nav ml-auto">
 
           <li class="nav-item active">
-            <a class="nav-link text-light" href="index.php"><span class="fa fa-home"></span> หน้าแรก </a>
+            <a class="nav-link text-white" href="index.php"><span class="fa fa-home"></span> หน้าแรก </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link text-light" href="his_shop.php"><span class="fa fa-bookmark"></span> ประวัติการสั่งซื้อ </a>
+            <a class="nav-link text-white" href="his_shop.php"><span class="fa fa-bookmark"></span> ประวัติการสั่งซื้อ </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link text-light" href="contact.php"><span class="fa fa-envelope"></span> ติดต่อเรา </a>
+            <a class="nav-link text-white" href="contact.php"><span class="fa fa-envelope"></span> ติดต่อเรา </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link text-light" href="activities.php"><span class="fa fa-image"></span> กิจกรรม </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="cart.php" class="nav-link text-light">
-              <span class="fa fa-shopping-cart"></span> ตะกร้าสินค้า <?php echo (isset($_SESSION['countCart'])) ? $_SESSION['countCart'] : ""; ?>
+            <a href="cart.php" class="nav-link text-white">
+              <span class="fa fa-shopping-cart"></span> ตะกร้าสินค้า <?php echo isset($_SESSION['countCart']) ? $_SESSION['countCart'] : ''; ?>
             </a>
           </li>
-          <?php if ($rs_member->level == 'admin') : ?>
-            <li class="nav-item">
-              <a class="nav-link text-light" href="admin__dash/"><span class="fa fa-lock"></span> หลังร้าน </a>
-            </li>
-          <?php endif; ?>
+          <?php if (isset($rs_member)) :
+            if ($rs_member !== false && $rs_member->level === 'admin') : ?>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="admin__dash/"><span class="fa fa-lock"></span> หลังร้าน </a>
+              </li>
+          <?php endif;
+          endif; ?>
 
         </ul>
       </div>
     </div>
   </nav>
-  <div class="container-fluid">
+  <div class="container">
     <div class="row">
